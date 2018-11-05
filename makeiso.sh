@@ -4,9 +4,10 @@
 
 i686-elf-as boot.s -o boot.o
 i686-elf-gcc -c graphics.c -o graphics.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+i686-elf-gcc -c splash.c -o splash.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 i686-elf-gcc -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 i686-elf-gcc -c memfunc.c -o memfunc.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-i686-elf-gcc -T linker.ld -o nicos.bin -ffreestanding -O2 -nostdlib boot.o kernel.o graphics.o memfunc.o -lgcc
+i686-elf-gcc -T linker.ld -o nicos.bin -ffreestanding -O2 -nostdlib boot.o kernel.o graphics.o memfunc.o splash.o -lgcc
 mkdir -p isodir
 mkdir -p isodir/boot
 cp nicos.bin isodir/boot/
