@@ -88,3 +88,11 @@ void terminal_writestring(const char* data) {
         for (size_t i = 0; i < datalen; i++)
                 terminal_putchar(data[i]);
 }
+
+void terminal_writestringat(const char* data, size_t x, size_t y, uint8_t color) {
+	size_t datalen = strlen(data);
+	for (size_t i = 0; i < datalen; i++) {
+		terminal_putentryat(data[i], color, x, y);
+		x++;
+	}
+}
