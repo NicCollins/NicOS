@@ -22,6 +22,7 @@ extern "C" /* Use C linkage for kernel_main. */
 void kernel_main() {
 	/* Initialize terminal interface */
 	terminal_initialize();
- 
+
+	/* display the OS splash screen */ 
 	draw_splash();
 }

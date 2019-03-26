@@ -19,7 +19,7 @@ nicos.bin : linker.ld boot.o graphics.o splash.o kernel.o memfunc.o
 boot.o : boot.s
 	i686-elf-as boot.s -o boot.o
 
-kernel.o : kernel.c
+kernel.o : kernel.c graphics.h splash.h
 	${CC} -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 \
 		-Wall -Wextra
 
@@ -31,7 +31,7 @@ memfunc.o : memfunc.c
 	${CC} -c memfunc.c -o memfunc.o -std=gnu99 -ffreestanding -O2 \
 		-Wall -Wextra
 
-splash.o : splash.c
+splash.o : splash.c graphics.h
 	${CC} -c splash.c -o splash.o -std=gnu99 -ffreestanding -O2 \
 		-Wall -Wextra
 
