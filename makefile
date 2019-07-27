@@ -14,10 +14,13 @@ cp : nicos.bin grub.cfg
 
 nicos.bin : linker.ld boot.o graphics.o splash.o kernel.o memfunc.o
 	${CC} -T linker.ld -o nicos.bin -ffreestanding -O2 -nostdlib \
-		boot.o kernel.o graphics.o memfunc.o splash.o -lgcc
+		*.o -lgcc
 
-boot.o : boot.s
+boot.o : boot.s gdt.o
 	i686-elf-as boot.s -o boot.o
+
+gdt.o : gdt.s
+	i686-elf-as gdt.s -o gdt.o
 
 kernel.o : kernel.c graphics.h splash.h
 	${CC} -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 \
@@ -35,9 +38,17 @@ splash.o : splash.c graphics.h
 	${CC} -c splash.c -o splash.o -std=gnu99 -ffreestanding -O2 \
 		-Wall -Wextra
 
-clean :
-	rm nicos.iso nicos.bin boot.o kernel.o graphics.o memfunc.o splash.o
+clean : clean_o clean_iso clean_bin
+
+clean_o :
+	rm *.o
+
+clean_iso :
+	rm nicos.iso
 	rm -rf isodir
 
+clean_bin :
+	rm nicos.bin
+
 run :
-	qemu-system-i386 nicos.iso
+	qemu-system-i386 nicos.iso -d int -D qemu.log

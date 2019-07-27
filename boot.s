@@ -56,6 +56,16 @@ _start:
 	# our stack (as it grows downwards).
 	movl $stack_top, %esp
 
+	# Confirm multiboot load before proceeding.
+	cmp $0x2badb002, %eax
+	jne .Stop
+
+	# Setup the GDT
+	cli
+	xor %eax, %eax
+	mov %ax, %ds
+	lgdt (gdt_desc)
+
 	# We are now ready to actually execute C code. We cannot embed that in an
 	# assembly file, so we'll create a kernel.c file in a moment. In that file,
 	# we'll create a C entry point called kernel_main and call it here.
@@ -67,6 +77,7 @@ _start:
 	# the next interrupt arrives, and jumping to the halt instruction if it ever
 	# continues execution, just to be safe. We will create a local label rather
 	# than real symbol and jump to there endlessly.
+.Stop:
 	cli
 	hlt
 .Lhang:
