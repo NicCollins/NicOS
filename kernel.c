@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "graphics.h"
 #include "splash.h"
+#include "pic.h"
  
 /* Check if the compiler thinks if we are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -25,4 +26,7 @@ void kernel_main() {
 
 	/* display the OS splash screen */ 
 	draw_splash();
+
+	/* Init PICs */
+	init_pics(0x20, 0x28);
 }
