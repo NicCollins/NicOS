@@ -12,7 +12,7 @@ cp : nicos.bin grub.cfg
 	cp nicos.bin isodir/boot/
 	cp grub.cfg isodir/boot/grub/
 
-nicos.bin : linker.ld boot.o graphics.o splash.o kernel.o memfunc.o
+nicos.bin : linker.ld boot.o graphics.o splash.o kernel.o memfunc.o pic.o
 	${CC} -T linker.ld -o nicos.bin -ffreestanding -O2 -nostdlib \
 		*.o -lgcc
 
@@ -22,7 +22,7 @@ boot.o : boot.s gdt.o
 gdt.o : gdt.s
 	i686-elf-as gdt.s -o gdt.o
 
-kernel.o : kernel.c graphics.h splash.h
+kernel.o : kernel.c graphics.h splash.h pic.h
 	${CC} -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 \
 		-Wall -Wextra
 
@@ -36,6 +36,10 @@ memfunc.o : memfunc.c
 
 splash.o : splash.c graphics.h
 	${CC} -c splash.c -o splash.o -std=gnu99 -ffreestanding -O2 \
+		-Wall -Wextra
+
+pic.o : pic.c
+	${CC} -c pic.c -o pic.o -std=gnu99 -ffreestanding -O2 \
 		-Wall -Wextra
 
 clean : clean_o clean_iso clean_bin

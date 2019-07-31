@@ -42,3 +42,7 @@ void* memset(void* bufptr, int value, size_t size) {
 
 	return bufptr;
 }
+
+void outb(unsigned short port, unsigned char data) {
+	__asm__ __volatile__ ("outb %1, %0" : : "dN" (port), "a" (data));
+}
